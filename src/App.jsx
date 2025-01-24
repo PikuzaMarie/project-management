@@ -25,26 +25,62 @@ function App() {
     });
   };
 
-  let content;
+  const handleAddProject = project => {
+    setProjectsState(prevState => {
+      const currentProjects = prevState.projects;
+      const currentProjectsCount = currentProjects.length;
+      const currentSelectedProjectId = prevState.selectedProjectId;
 
-  switch (projectsState.selectedProjectId) {
-    case undefined: {
-      content = <NoProjectSelected onAddProject={handleStartAddProject} />;
-      break;
-    }
-    case null: {
-      content = <NewProject />;
-      break;
-    }
-    default: {
-      content = <NoProjectSelected onAddProject={handleStartAddProject} />;
-      break;
-    }
+      let newSelectedProjectId;
+
+      if (currentProjectsCount > 0) {
+        newSelectedProjectId = currentSelectedProjectId
+          ? currentSelectedProjectId + 1
+          : currentProjects[currentProjectsCount - 1].id + 1;
+      } else {
+        newSelectedProjectId = 0;
+      }
+
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: [
+          ...prevState.projects,
+          { id: newSelectedProjectId, ...project },
+        ],
+      };
+    });
+  };
+
+  const handleCloseProject = () => {
+    setProjectsState(prevState => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+      };
+    });
+  };
+
+  let content;
+  const curSelectedProjectId = projectsState.selectedProjectId;
+
+  if (curSelectedProjectId === undefined) {
+    content = <NoProjectSelected onAddProject={handleStartAddProject} />;
+  } else if (curSelectedProjectId === null) {
+    content = (
+      <NewProject
+        onAddProject={handleAddProject}
+        onCancelAddProject={handleCloseProject}
+      />
+    );
   }
 
   return (
     <main className="my-8 flex h-screen gap-8">
-      <ProjectsSidebar onAddProject={handleStartAddProject} />
+      <ProjectsSidebar
+        projectsData={projectsState.projects}
+        onAddProject={handleStartAddProject}
+      />
       {content}
     </main>
   );
