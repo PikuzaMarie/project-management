@@ -7,10 +7,12 @@ export function ProjectsSidebar({ projectsData, onAddProject }) {
         Your projects
       </h2>
       <PrimaryButton onClick={onAddProject}>+ Add a project</PrimaryButton>
-      <ul>
+      <ul className="mt-8">
         {projectsData.map(project => (
           <li key={project.id}>
-            <button>{project.title}</button>
+            <button className="my-1 w-full rounded-sm px-2 py-1 text-left text-stone-400 hover:bg-stone-800 hover:text-stone-200">
+              {project.title}
+            </button>
           </li>
         ))}
       </ul>
