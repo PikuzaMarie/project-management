@@ -9,7 +9,7 @@ export function SelectedProject({
 }) {
   const formattedDate = new Date(project.dueDate).toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
   });
 
@@ -27,10 +27,10 @@ export function SelectedProject({
             Delete
           </button>
         </div>
-        <p className="mb-4 whitespace-pre-wrap text-stone-400">
+        <p className="mb-4 text-stone-500">{formattedDate}</p>
+        <p className="whitespace-pre-wrap text-stone-400">
           {project.description}
         </p>
-        <p className="text-stone-600">{formattedDate}</p>
       </header>
       <Tasks
         tasksData={tasks}
