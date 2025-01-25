@@ -1,5 +1,5 @@
 import { PrimaryButton } from '../PrimaryButton';
-import noProjectImage from '../../assets/no-projects.png';
+import noProjectImage from '/no-projects.png?url';
 
 export function NoProjectSelected({ onAddProject }) {
   return (
