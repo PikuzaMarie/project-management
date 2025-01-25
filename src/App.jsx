@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ProjectsSidebar } from './components/ProjectsSidebar';
 import { NewProject } from './components/NewProject';
 import { NoProjectSelected } from './components/NoProjectSelected';
+import { SelectedProject } from './components/SelectedProject';
 
 const INITIAL_PROJECTS_STATE = {
   // selectedProjectId variable holds one of three possible values
@@ -61,6 +62,15 @@ function App() {
     });
   };
 
+  const handleOpenProject = projectId => {
+    setProjectsState(prevState => {
+      return {
+        ...prevState,
+        selectedProjectId: projectId,
+      };
+    });
+  };
+
   let content;
   const curSelectedProjectId = projectsState.selectedProjectId;
 
@@ -73,6 +83,14 @@ function App() {
         onCancelAddProject={handleCloseProject}
       />
     );
+  } else if (curSelectedProjectId >= 0) {
+    content = (
+      <SelectedProject
+        project={projectsState.projects.find(
+          project => project.id === curSelectedProjectId,
+        )}
+      />
+    );
   }
 
   return (
@@ -80,6 +98,8 @@ function App() {
       <ProjectsSidebar
         projectsData={projectsState.projects}
         onAddProject={handleStartAddProject}
+        onOpenProject={handleOpenProject}
+        selectedProjectId={curSelectedProjectId}
       />
       {content}
     </main>
