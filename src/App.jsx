@@ -3,6 +3,7 @@ import { ProjectsSidebar } from './components/ProjectsSidebar';
 import { NewProject } from './components/NewProject';
 import { NoProjectSelected } from './components/NoProjectSelected';
 import { SelectedProject } from './components/SelectedProject';
+import { str5_36 } from 'hyperdyperid/lib/str5_36';
 
 const INITIAL_PROJECTS_STATE = {
   // selectedProjectId variable holds one of three possible values
@@ -12,6 +13,7 @@ const INITIAL_PROJECTS_STATE = {
   // initially set to undefined
   selectedProjectId: undefined,
   projects: [],
+  tasks: [],
 };
 
 function App() {
@@ -83,6 +85,32 @@ function App() {
     });
   };
 
+  const handleAddTask = newTaskText => {
+    setProjectsState(prevState => {
+      const taskId = str5_36();
+
+      const newTask = {
+        id: taskId,
+        text: newTaskText,
+        projectId: prevState.selectedProjectId,
+      };
+
+      return {
+        ...prevState,
+        tasks: [newTask, ...prevState.tasks],
+      };
+    });
+  };
+
+  const handleDeleteTask = taskId => {
+    setProjectsState(prevState => {
+      return {
+        ...prevState,
+        tasks: prevState.tasks.filter(task => task.id !== taskId),
+      };
+    });
+  };
+
   let content;
   const curSelectedProjectId = projectsState.selectedProjectId;
 
@@ -102,6 +130,9 @@ function App() {
           project => project.id === curSelectedProjectId,
         )}
         onDeleteProject={handleDeleteProject}
+        tasks={projectsState.tasks}
+        onAddTask={handleAddTask}
+        onDeleteTask={handleDeleteTask}
       />
     );
   }
