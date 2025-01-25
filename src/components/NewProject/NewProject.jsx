@@ -25,8 +25,8 @@ export function NewProject({ onAddProject, onCancelAddProject }) {
 
     const project = {
       title: enteredTitle,
-      descripton: enteredDescription,
-      date: enteredDate,
+      description: enteredDescription,
+      dueDate: enteredDate,
     };
 
     onAddProject(project);
