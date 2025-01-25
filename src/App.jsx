@@ -30,27 +30,11 @@ function App() {
 
   const handleAddProject = project => {
     setProjectsState(prevState => {
-      const currentProjects = prevState.projects;
-      const currentProjectsCount = currentProjects.length;
-      const currentSelectedProjectId = prevState.selectedProjectId;
-
-      let newSelectedProjectId;
-
-      if (currentProjectsCount > 0) {
-        newSelectedProjectId = currentSelectedProjectId
-          ? currentSelectedProjectId + 1
-          : currentProjects[currentProjectsCount - 1].id + 1;
-      } else {
-        newSelectedProjectId = 0;
-      }
-
+      const projectId = str5_36();
       return {
         ...prevState,
         selectedProjectId: undefined,
-        projects: [
-          ...prevState.projects,
-          { id: newSelectedProjectId, ...project },
-        ],
+        projects: [...prevState.projects, { id: projectId, ...project }],
       };
     });
   };
@@ -123,7 +107,7 @@ function App() {
         onCancelAddProject={handleCloseProject}
       />
     );
-  } else if (curSelectedProjectId >= 0) {
+  } else if (curSelectedProjectId) {
     content = (
       <SelectedProject
         project={projectsState.projects.find(
