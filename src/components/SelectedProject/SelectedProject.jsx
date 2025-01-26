@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ProjectsContext } from '../../store/projectsStateContext';
-// import { Tasks } from '../Tasks';
+import { Tasks } from '../Tasks';
 
 export function SelectedProject() {
   const { projects, selectedProjectId, deleteProject } =
@@ -32,12 +32,7 @@ export function SelectedProject() {
           {project.description}
         </p>
       </header>
-      {/* <Tasks
-        tasksData={tasks}
-        selectedProjectId={project.id}
-        onAddTask={onAddTask}
-        onDeleteTask={onDeleteTask}
-      /> */}
+      <Tasks />
     </div>
   );
 }

@@ -1,7 +1,12 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
+import { TasksContext } from '../../store/tasksStateContext';
+import { ProjectsContext } from '../../store/projectsStateContext';
 import { Modal } from '../Modal';
 
-export function NewTask({ onAddTask }) {
+export function NewTask() {
+  const { selectedProjectId } = useContext(ProjectsContext);
+  const { addTask } = useContext(TasksContext);
+
   const [taskValue, setTaskValue] = useState('');
   const modal = useRef();
 
@@ -14,7 +19,8 @@ export function NewTask({ onAddTask }) {
       modal.current.open();
       return;
     }
-    onAddTask(taskValue);
+    addTask(taskValue, selectedProjectId);
+
     setTaskValue('');
   };
 
@@ -30,6 +36,7 @@ export function NewTask({ onAddTask }) {
       </Modal>
       <div className="flex items-center gap-2">
         <input
+          key={selectedProjectId}
           type="text"
           value={taskValue}
           onChange={e => handleInputTask(e.target.value)}

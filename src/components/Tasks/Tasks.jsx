@@ -1,22 +1,23 @@
+import { useContext } from 'react';
+import { TasksContext } from '../../store/tasksStateContext';
+import { ProjectsContext } from '../../store/projectsStateContext';
 import { NewTask } from '../NewTask';
 
-export function Tasks({
-  tasksData,
-  onAddTask,
-  onDeleteTask,
-  selectedProjectId,
-}) {
+export function Tasks() {
+  const { selectedProjectId } = useContext(ProjectsContext);
+  const { tasks, deleteTask } = useContext(TasksContext);
+
   const handleDeleteTask = taskId => {
-    onDeleteTask(taskId);
+    deleteTask(taskId);
   };
 
   return (
     <section>
       <h2 className="mb-4 text-xl font-bold text-stone-700">Tasks</h2>
-      <NewTask onAddTask={onAddTask} />
-      {tasksData.length > 0 ? (
+      <NewTask />
+      {tasks.length > 0 ? (
         <ul className="mt-8 rounded-md bg-stone-100 p-3">
-          {tasksData.map(task => {
+          {tasks.map(task => {
             if (task.projectId === selectedProjectId) {
               return (
                 <li

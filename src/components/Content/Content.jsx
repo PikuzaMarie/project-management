@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { ProjectsContext } from '../../store/projectsStateContext';
+import { TasksContextProvider } from '../../store/tasksStateContext';
 import { ProjectsSidebar } from '../ProjectsSidebar';
 import { NewProject } from '../NewProject';
 import { NoProjectSelected } from '../NoProjectSelected';
@@ -21,7 +22,7 @@ export function Content() {
   return (
     <main className="my-8 flex h-screen gap-8">
       <ProjectsSidebar />
-      {content}
+      <TasksContextProvider>{content}</TasksContextProvider>
     </main>
   );
 }
