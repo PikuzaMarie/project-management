@@ -1,33 +1,35 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+import { tasksReducer } from './tasks-reducer';
 import { TasksContext } from './tasks-context';
 import { str5_36 } from 'hyperdyperid/lib/str5_36';
 
+const state = {
+  tasks: [],
+};
+
 export function TasksContextProvider({ children }) {
-  const [tasksState, setTasksState] = useState([]);
+  const [tasksState, tasksDispatcher] = useReducer(tasksReducer, state);
 
   const handleAddTask = (newTaskText, selectedProjectId) => {
-    setTasksState(prevState => {
-      const taskId = str5_36();
+    const taskId = str5_36();
+    const newTask = {
+      id: taskId,
+      text: newTaskText,
+      projectId: selectedProjectId,
+    };
 
-      return [
-        {
-          id: taskId,
-          text: newTaskText,
-          projectId: selectedProjectId,
-        },
-        ...prevState,
-      ];
+    tasksDispatcher({
+      type: 'ADD',
+      payload: newTask,
     });
   };
 
   const handleDeleteTask = taskId => {
-    setTasksState(prevState => {
-      return prevState.filter(task => task.id !== taskId);
-    });
+    tasksDispatcher({ type: 'DELETE', payload: taskId });
   };
 
   const ctxValue = {
-    tasks: tasksState,
+    tasks: tasksState.tasks,
     addTask: handleAddTask,
     deleteTask: handleDeleteTask,
   };
