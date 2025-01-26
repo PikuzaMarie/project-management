@@ -1,61 +1,44 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+import { projectsReducer } from './projects-reducer';
 import { ProjectsContext } from './projects-context';
 import { str5_36 } from 'hyperdyperid/lib/str5_36';
 
+const state = {
+  projects: [],
+  selectedProjectId: undefined,
+};
+
 export function ProjectsContextProvider({ children }) {
-  const [projectsState, setProjectsState] = useState({
-    projects: [],
-    selectedProjectId: undefined,
-  });
+  const [projectsState, projectsDispatcher] = useReducer(
+    projectsReducer,
+    state,
+  );
 
   const handleStartAddProject = () => {
-    setProjectsState(prevState => {
-      return {
-        ...prevState,
-        selectedProjectId: null,
-      };
-    });
+    projectsDispatcher({ type: 'START_ADD' });
   };
 
   const handleAddProject = project => {
-    setProjectsState(prevState => {
-      const projectId = str5_36();
-      return {
-        ...prevState,
-        selectedProjectId: undefined,
-        projects: [...prevState.projects, { id: projectId, ...project }],
-      };
+    const projectId = str5_36();
+    projectsDispatcher({
+      type: 'ADD',
+      payload: {
+        project,
+        projectId,
+      },
     });
   };
 
   const handleCloseProject = () => {
-    setProjectsState(prevState => {
-      return {
-        ...prevState,
-        selectedProjectId: undefined,
-      };
-    });
+    projectsDispatcher({ type: 'CLOSE' });
   };
 
   const handleOpenProject = projectId => {
-    setProjectsState(prevState => {
-      return {
-        ...prevState,
-        selectedProjectId: projectId,
-      };
-    });
+    projectsDispatcher({ type: 'OPEN', payload: { projectId } });
   };
 
   const handleDeleteProject = projectId => {
-    setProjectsState(prevState => {
-      return {
-        ...prevState,
-        selectedProjectId: undefined,
-        projects: prevState.projects.filter(
-          project => project.id !== projectId,
-        ),
-      };
-    });
+    projectsDispatcher({ type: 'DELETE', payload: { projectId } });
   };
 
   const ctxValue = {
