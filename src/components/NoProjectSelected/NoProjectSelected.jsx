@@ -1,7 +1,11 @@
+import { useContext } from 'react';
+import { ProjectsContext } from '../../store/projectsStateContext';
 import { PrimaryButton } from '../PrimaryButton';
 import noProjectImage from '/no-projects.png?url';
 
-export function NoProjectSelected({ onAddProject }) {
+export function NoProjectSelected() {
+  const { startAddProject } = useContext(ProjectsContext);
+
   return (
     <div className="mt-24 w-2/3 text-center">
       <img
@@ -16,7 +20,9 @@ export function NoProjectSelected({ onAddProject }) {
         Select a project or get started with a new one
       </p>
       <p className="mt-8">
-        <PrimaryButton onClick={onAddProject}>Create new project</PrimaryButton>
+        <PrimaryButton onClick={startAddProject}>
+          Create new project
+        </PrimaryButton>
       </p>
     </div>
   );

@@ -1,12 +1,12 @@
+import { useContext } from 'react';
+import { ProjectsContext } from '../../store/projectsStateContext';
 import { Tasks } from '../Tasks';
 
-export function SelectedProject({
-  project,
-  onDeleteProject,
-  tasks,
-  onAddTask,
-  onDeleteTask,
-}) {
+export function SelectedProject() {
+  const { projects, selectedProjectId, deleteProject } =
+    useContext(ProjectsContext);
+  const project = projects.find(project => project.id === selectedProjectId);
+
   const formattedDate = new Date(project.dueDate).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -22,7 +22,7 @@ export function SelectedProject({
           </h2>
           <button
             className="text-stone-600 hover:text-stone-800"
-            onClick={() => onDeleteProject(project.id)}
+            onClick={() => deleteProject(project.id)}
           >
             Delete
           </button>
@@ -32,12 +32,7 @@ export function SelectedProject({
           {project.description}
         </p>
       </header>
-      <Tasks
-        tasksData={tasks}
-        selectedProjectId={project.id}
-        onAddTask={onAddTask}
-        onDeleteTask={onDeleteTask}
-      />
+      <Tasks />
     </div>
   );
 }

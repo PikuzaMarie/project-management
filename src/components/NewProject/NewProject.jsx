@@ -1,9 +1,12 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
+import { ProjectsContext } from '../../store/projectsStateContext';
 import { Input } from '../Input';
 import { PrimaryButton } from '../PrimaryButton';
 import { Modal } from '../Modal';
 
-export function NewProject({ onAddProject, onCancelAddProject }) {
+export function NewProject() {
+  const { addProject, closeProject } = useContext(ProjectsContext);
+
   const modal = useRef();
 
   const titleRef = useRef();
@@ -29,13 +32,13 @@ export function NewProject({ onAddProject, onCancelAddProject }) {
       dueDate: enteredDate,
     };
 
-    onAddProject(project);
+    addProject(project);
     handleResetFields();
   };
 
   const handleCancelCreation = () => {
     handleResetFields();
-    onCancelAddProject();
+    closeProject();
   };
 
   const handleResetFields = () => {
