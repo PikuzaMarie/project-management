@@ -2,38 +2,24 @@ import { useContext } from 'react';
 import { TasksContext } from '../../store/tasksStateContext';
 import { ProjectsContext } from '../../store/projectsStateContext';
 import { NewTask } from '../NewTask';
+import { Task } from '../Task';
 
 export function Tasks() {
   const { selectedProjectId } = useContext(ProjectsContext);
-  const { tasks, deleteTask } = useContext(TasksContext);
+  const { tasks } = useContext(TasksContext);
 
-  const handleDeleteTask = taskId => {
-    deleteTask(taskId);
-  };
+  const tasksForCurProject = tasks.filter(
+    task => task.projectId === selectedProjectId,
+  );
 
   return (
     <section>
       <h2 className="mb-4 text-xl font-bold text-stone-700">Tasks</h2>
       <NewTask />
-      {tasks.length > 0 ? (
+      {tasksForCurProject.length > 0 ? (
         <ul className="mt-8 rounded-md bg-stone-100 p-3">
-          {tasks.map(task => {
-            if (task.projectId === selectedProjectId) {
-              return (
-                <li
-                  key={task.id}
-                  className="mb-2 flex items-center justify-between rounded-sm bg-stone-200 px-2"
-                >
-                  <span className="m-0 p-0">{task.text}</span>
-                  <button
-                    className="rounded-sm px-4 py-2 text-stone-700 hover:bg-red-200 hover:text-red-800"
-                    onClick={() => handleDeleteTask(task.id)}
-                  >
-                    X
-                  </button>
-                </li>
-              );
-            }
+          {tasksForCurProject.map(task => {
+            return <Task key={task.id} {...task} />;
           })}
         </ul>
       ) : (
